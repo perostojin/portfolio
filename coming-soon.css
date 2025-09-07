@@ -1,0 +1,101 @@
+:root{
+  --bg:#0b0f14;
+  --fg:#e6e7eb;
+  --muted:#a3a8b3;
+  --card:#11161c;
+  --stroke:#1e2833;
+  --acc:#4f46e5;
+}
+
+/* Bas */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
+
+/* Wrapper */
+.wrap{
+  min-height:100%;
+  display:grid;
+  place-items:center;
+  padding:32px 16px;
+  position:relative;
+  isolation:isolate; /* så bg ligger bakom */
+}
+
+/* Bakgrund – tre mjuka "blobs" som rör sig långsamt */
+.bg{
+  position:fixed; inset:-20vmax;
+  filter: blur(70px) saturate(140%);
+  z-index:-1;
+}
+.bg span{
+  position:absolute; width:45vmax; height:45vmax; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #6d72ff 0%, transparent 60%),
+              radial-gradient(circle at 70% 70%, #22d3ee 0%, transparent 60%),
+              #1a2030;
+  opacity:.4;
+  animation: drift 22s linear infinite;
+}
+.bg span:nth-child(2){ left:55%; top:10%; animation-duration:28s; opacity:.35}
+.bg span:nth-child(3){ left:20%; top:60%; animation-duration:26s; opacity:.3}
+
+@keyframes drift{
+  0%   { transform: translate3d(0,0,0) rotate(0deg) }
+  50%  { transform: translate3d(6vw,-4vh,0) rotate(120deg) }
+  100% { transform: translate3d(0,0,0) rotate(360deg) }
+}
+
+/* Minskad rörelse för de som valt det i OS */
+@media (prefers-reduced-motion: reduce){
+  .bg span{ animation:none }
+}
+
+/* Layout-block */
+.stack{ max-width:780px; text-align:center; margin-inline:auto; }
+.title{ font-size:clamp(28px,6vw,56px); margin:0 0 8px; letter-spacing:.3px }
+.subtitle{ color:var(--muted); margin:0 0 16px; font-size:clamp(16px,2.2vw,20px) }
+.lead{ color:#cfd3db; margin:0 auto 18px; max-width:60ch }
+
+.links{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:14px 0 6px }
+.btn{
+  display:inline-block; padding:10px 16px; border-radius:10px;
+  background:var(--acc); color:#fff; text-decoration:none; border:1px solid transparent;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 6px 18px rgba(79,70,229,.25);
+}
+.btn:hover{ transform: translateY(-1px) }
+.btn:active{ transform: translateY(1px) }
+.btn-ghost{
+  background:transparent; color:var(--fg); border:1px solid #3a4254;
+  box-shadow:none;
+}
+
+/* Kort/formulär */
+.card{
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  border:1px solid var(--stroke);
+  border-radius:16px;
+  padding:20px; margin-top:22px;
+  max-width:780px; width:min(780px, 100%);
+}
+.card h2{ margin:0 0 10px; font-size:22px }
+
+.grid{ display:grid; gap:12px; grid-template-columns:1fr 1fr }
+@media (max-width:700px){ .grid{ grid-template-columns:1fr } }
+
+label{ display:grid; gap:6px; text-align:left; color:#d7dbe3 }
+input, textarea{
+  width:100%; padding:12px 14px; border-radius:10px;
+  background:#0c1117; color:var(--fg); border:1px solid #212a36;
+  outline:none;
+}
+input:focus, textarea:focus{ border-color:#334155; box-shadow: 0 0 0 3px rgba(51,65,85,.25) }
+
+.muted{ color:var(--muted); font-size:13px; margin-top:8px }
+.foot{ text-align:center; margin-top:24px; color:var(--muted) }
